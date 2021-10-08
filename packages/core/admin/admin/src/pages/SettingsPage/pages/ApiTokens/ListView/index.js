@@ -16,6 +16,7 @@ import AddIcon from '@strapi/icons/AddIcon';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import qs from 'qs';
+import { LinkButton } from '@strapi/parts/LinkButton';
 import TableRows from './DynamicTable';
 import { axiosInstance } from '../../../../../core/utils';
 import adminPermissions from '../../../../../permissions';
@@ -134,12 +135,17 @@ const ApiTokenListView = () => {
         })}
         primaryAction={
           canCreate ? (
-            <Button data-testid="create-api-token-button" startIcon={<AddIcon />} size="L">
+            <LinkButton
+              data-testid="create-api-token-button"
+              startIcon={<AddIcon />}
+              size="L"
+              to="/settings/api-tokens/create"
+            >
               {formatMessage({
                 id: 'Settings.apiTokens.create',
                 defaultMessage: 'Add Entry',
               })}
-            </Button>
+            </LinkButton>
           ) : (
             undefined
           )
