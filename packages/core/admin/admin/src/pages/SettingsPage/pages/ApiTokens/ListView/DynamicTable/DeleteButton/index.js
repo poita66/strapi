@@ -6,13 +6,13 @@ import { stopPropagation } from '@strapi/helper-plugin';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 
-const DeleteButton = ({ tokenName, onClick }) => {
+const DeleteButton = ({ tokenName, onClickDelete }) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box paddingLeft={1} {...stopPropagation}>
       <IconButton
-        onClick={onClick}
+        onClick={onClickDelete}
         label={formatMessage(
           {
             id: 'app.component.table.delete',
@@ -28,12 +28,12 @@ const DeleteButton = ({ tokenName, onClick }) => {
 };
 
 DeleteButton.defaultProps = {
-  onClick: () => {},
+  onClickDelete: () => {},
 };
 
 DeleteButton.propTypes = {
   tokenName: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  onClickDelete: PropTypes.func,
 };
 
 export default DeleteButton;

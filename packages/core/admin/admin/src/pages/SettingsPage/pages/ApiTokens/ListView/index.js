@@ -13,7 +13,7 @@ import { HeaderLayout, ContentLayout } from '@strapi/parts/Layout';
 import { Main } from '@strapi/parts/Main';
 import { Button } from '@strapi/parts/Button';
 import AddIcon from '@strapi/icons/AddIcon';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import qs from 'qs';
 import { LinkButton } from '@strapi/parts/LinkButton';
@@ -24,6 +24,7 @@ import tableHeaders from './utils/tableHeaders';
 
 const ApiTokenListView = () => {
   useFocusWhenNavigate();
+  const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
   const toggleNotification = useNotification();
   const {
@@ -71,6 +72,27 @@ const ApiTokenListView = () => {
     return false;
   };
 
+  const deleteMutation = useMutation(
+    async id => {
+      await axiosInstance.delete(`/admin/api-tokens/${id}`);
+    },
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(['api-tokens']);
+      },
+      onError: err => {
+        if (err?.response?.data?.data) {
+          toggleNotification({ type: 'warning', message: err.response.data.data });
+        } else {
+          toggleNotification({
+            type: 'warning',
+            message: { id: 'notification.error', defaultMessage: 'An error occured' },
+          });
+        }
+      },
+    }
+  );
+
   const contentBasedOnPermissions = () => {
     if (!canRead) {
       return <NoPermissions />;
@@ -84,6 +106,7 @@ const ApiTokenListView = () => {
           rows={apiTokens}
           withBulkActions={canDelete || canUpdate}
           isLoading={isLoading()}
+          onConfirmDelete={id => deleteMutation.mutateAsync(id)}
         >
           <TableRows
             canDelete={canDelete}
