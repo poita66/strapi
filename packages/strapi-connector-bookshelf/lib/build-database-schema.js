@@ -177,7 +177,7 @@ const buildColType = ({ name, attribute, table, tableExists = false, definition,
     case 'string':
     case 'password':
     case 'email':
-      return table.string(name, Math.max(attribute.maxLength || 0, 255));
+      return table.string(name, attribute.maxLength);
     case 'integer':
       return table.integer(name);
     case 'biginteger':
