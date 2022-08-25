@@ -521,11 +521,11 @@ const getProfile = async (provider, query, callback) => {
             callback(err);
           } else {
             const username =
-              body.username || body.nickname || body.name || body.email.split('@')[0];
+               body.username || body.nickname || body.name || body.email.split('@')[0];
             const email = body.email || `${username.replace(/\s+/g, '.')}@strapi.io`;
 
             callback(null, {
-              username,
+              email,
               email,
             });
           }
