@@ -525,7 +525,7 @@ const getProfile = async (provider, query, callback) => {
             const email = body.email || `${username.replace(/\s+/g, '.')}@strapi.io`;
 
             callback(null, {
-              email,
+              username: email,
               email,
             });
           }
